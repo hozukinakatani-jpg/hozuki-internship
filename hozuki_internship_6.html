@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ほおずき介護職体験ツール</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #085041;
+  --green-mid: #1D9E75;
+  --green-light: #5DCAA5;
+  --green-pale: #E1F5EE;
+  --green-ultra: #f0faf6;
+  --amber: #EF9F27;
+  --red-soft: #E24B4A;
+  --text-main: #1a1a18;
+  --text-sub: #5a5a55;
+  --text-muted: #9a9a94;
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,0.08);
+  --border-mid: rgba(0,0,0,0.14);
+  --serif: 'Noto Serif JP', serif;
+  --sans: 'Noto Sans JP', sans-serif;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+/* ─── HEADER ─── */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 28px; height: 28px;
+  background: var(--green-mid);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 16px; height: 16px; fill: white; }
+.logo-text { font-family: var(--serif); font-size: 14px; font-weight: 700; color: var(--green-deep); letter-spacing: 0.04em; }
+.logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; margin-top: 1px; }
+.header-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--green-pale);
+  color: var(--green-deep);
+  letter-spacing: 0.04em;
+}
+
+/* ─── SCREENS ─── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* ─── TOP SCREEN ─── */
+#screen-top {
+  background: var(--bg);
+  padding-top: 80px;
+}
+
+.top-hero {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.top-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 40%, rgba(29,158,117,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 70% 60%, rgba(8,80,65,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--green-mid);
+  border: 0.5px solid var(--green-light);
+  background: var(--green-pale);
+  padding: 5px 14px;
+  border-radius: 99px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green-mid);
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 700;
+  color: var(--green-deep);
+  line-height: 1.4;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--green-mid);
+  border-bottom: 2px solid var(--green-light);
+  padding-bottom: 1px;
+}
+.hero-body {
+  font-size: 15px;
+  color: var(--text-sub);
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.mode-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.mode-label-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.mode-label-row::before, .mode-label-row::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border-mid);
+}
+.mode-label-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+@media (max-width: 480px) { .mode-grid { grid-template-columns: 1fr; } }
+
+.mode-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.mode-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(29,158,117,0.04) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.mode-card:hover { border-color: var(--green-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,158,117,0.1); }
+.mode-card:hover::after { opacity: 1; }
+.mode-card.selected {
+  border-color: var(--green-mid);
+  background: var(--green-ultra);
+  box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
+}
+.mode-card.selected::after { opacity: 1; }
+
+.mode-type {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--green-mid);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.mode-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.mode-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.mode-time-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.04);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.mode-check {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--green-mid);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.mode-check svg { width: 10px; height: 10px; fill: white; }
+.mode-card.selected .mode-check { display: flex; }
+
+.btn-start {
+  width: 100%;
+  padding: 18px;
+  background: var(--green-deep);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-start::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+.btn-start:hover:not(:disabled) { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(29,158,117,0.25); }
+.btn-start:disabled { background: #ccc; color: #999; cursor: default; transform: none; box-shadow: none; }
+.btn-start:disabled::after { display: none; }
+
+.company-strip {
+  background: var(--green-ultra);
+  border-top: 0.5px solid var(--border);
+  padding: 20px 24px;
+  text-align: center;
+}
+.company-strip p { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+.company-strip a { color: var(--green-mid); text-decoration: none; }
+.company-strip a:hover { text-decoration: underline; }
+
+/* ─── QUIZ SCREEN ─── */
+#screen-quiz {
+  padding-top: 70px;
+  background: var(--bg);
+}
+
+.quiz-layout {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.quiz-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.progress-steps {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+}
+.prog-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--border-mid);
+  transition: background 0.3s;
+}
+.prog-dot.done { background: var(--green-mid); }
+.prog-dot.active { background: var(--green-light); }
+.progress-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green-deep);
+  background: var(--green-pale);
+  padding: 4px 12px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.scene-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--green-mid);
+  background: var(--green-pale);
+  border: 0.5px solid var(--green-light);
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+}
+.scene-tag::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green-mid);
+}
+
+.q-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+}
+.q-question {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.q-context {
+  background: var(--green-ultra);
+  border-left: 3px solid var(--green-light);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.75;
+}
+.q-context-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--green-mid);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.choices-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.choice-btn {
+  background: var(--surface);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.65;
+  transition: all 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.choice-idx {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.15s;
+}
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--green-mid);
+  background: var(--green-ultra);
+  transform: translateX(2px);
+}
+.choice-btn:hover:not(:disabled) .choice-idx {
+  background: var(--green-pale);
+  color: var(--green-mid);
+}
+.choice-btn.correct {
+  border-color: var(--green-mid);
+  background: var(--green-pale);
+}
+.choice-btn.correct .choice-idx {
+  background: var(--green-mid);
+  color: white;
+}
+.choice-btn.incorrect {
+  border-color: var(--red-soft);
+  background: #FEF2F2;
+}
+.choice-btn.incorrect .choice-idx {
+  background: var(--red-soft);
+  color: white;
+}
+.choice-btn.reveal-correct {
+  border-color: var(--green-light);
+  background: var(--green-ultra);
+}
+.choice-btn:disabled { cursor: default; transform: none !important; }
+
+.feedback-card {
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.75;
+  display: none;
+}
+.feedback-card.show { display: block; animation: slideUp 0.25s ease; }
+.feedback-card.good {
+  background: var(--green-pale);
+  border: 0.5px solid var(--green-light);
+  color: var(--green-deep);
+}
+.feedback-card.bad {
+  background: #FEF2F2;
+  border: 0.5px solid #F09595;
+  color: #791F1F;
+}
+.feedback-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.feedback-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.good .feedback-icon { background: var(--green-mid); color: white; }
+.bad .feedback-icon { background: var(--red-soft); color: white; }
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-next {
+  padding: 13px 28px;
+  background: var(--green-deep);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.btn-next.show { display: flex; animation: slideUp 0.25s ease; }
+.btn-next:hover { background: var(--green-mid); }
+.btn-next svg { width: 14px; height: 14px; fill: white; }
+
+/* ─── RESULT SCREEN ─── */
+#screen-result {
+  padding-top: 70px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+.result-layout {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.result-hero {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 0.5px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.result-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+}
+.result-pct {
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--green-mid);
+  line-height: 1;
+  margin-bottom: 8px;
+  position: relative;
+}
+.result-pct-unit { font-size: 32px; color: var(--green-light); }
+.result-score-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.result-title-text {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 8px;
+}
+
+.section-block { margin-bottom: 36px; }
+.section-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-head::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border-mid);
+}
+
+.trait-grid { display: flex; flex-direction: column; gap: 14px; }
+.trait-row { display: flex; align-items: center; gap: 14px; }
+.trait-name { font-size: 13px; font-weight: 500; color: var(--text-sub); min-width: 70px; }
+.trait-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.trait-bar-fg {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+  width: 0;
+  transition: width 1s ease;
+}
+.trait-pct { font-size: 13px; font-weight: 500; color: var(--green-deep); min-width: 36px; text-align: right; }
+
+.career-timeline { display: flex; flex-direction: column; }
+.career-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 0;
+  position: relative;
+}
+.career-item:not(:last-child) { margin-bottom: 0; }
+.career-line-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  flex-shrink: 0;
+}
+.career-node {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  z-index: 1;
+  position: relative;
+}
+.career-node.done { background: var(--green-mid); color: white; }
+.career-node.current {
+  background: var(--green-deep);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(29,158,117,0.2);
+}
+.career-node.locked { background: var(--border); color: var(--text-muted); }
+.career-vline {
+  flex: 1;
+  width: 1.5px;
+  background: var(--border-mid);
+  min-height: 24px;
+}
+.career-item:last-child .career-vline { display: none; }
+.career-content {
+  flex: 1;
+  padding: 4px 0 24px;
+}
+.career-content-inner {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  transition: all 0.2s;
+}
+.career-item.current .career-content-inner {
+  border-color: var(--green-mid);
+  background: var(--green-ultra);
+  box-shadow: 0 2px 12px rgba(29,158,117,0.1);
+}
+.career-item.locked .career-content-inner { opacity: 0.5; }
+.career-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.career-item-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.career-item.locked .career-item-name { color: var(--text-muted); }
+.career-current-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: white;
+  background: var(--green-mid);
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.career-years { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.career-tasks { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+
+.message-card {
+  background: var(--green-pale);
+  border: 0.5px solid var(--green-light);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 28px;
+}
+.message-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 10px;
+}
+.message-card-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-mid); }
+.message-card p { font-size: 14px; color: var(--green-deep); line-height: 1.85; }
+
+.result-actions { display: flex; flex-direction: column; gap: 10px; }
+.btn-restart {
+  width: 100%;
+  padding: 16px;
+  background: var(--green-deep);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-restart:hover { background: var(--green-mid); }
+.btn-recruit {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  color: var(--green-deep);
+  border: 1px solid var(--green-mid);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+.btn-recruit:hover { background: var(--green-pale); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.screen.active { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo-wrap">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">有限会社ほおずき</div>
+      <div class="logo-sub">CHIAKI HOZUKI — CARE EXPERIENCE</div>
+    </div>
+  </div>
+  <div class="header-badge">オンラインインターンシップ</div>
+</header>
+
+<!-- ============================
+     SCREEN: TOP
+============================= -->
+<div class="screen active" id="screen-top">
+  <div class="top-hero">
+    <div class="hero-eyebrow">グループホーム介護職 体験ツール</div>
+    <h1 class="hero-title">
+      あなたの<em>介護適性</em>を<br>確かめてみよう
+    </h1>
+    <p class="hero-body">
+      ほおずきのグループホームで実際に起こる場面をもとにしたシナリオに答えながら、
+      介護職としての自分の強みと、キャリアの可能性を体験できます。
+    </p>
+  </div>
+
+  <div class="mode-section">
+    <div class="mode-label-row">
+      <span class="mode-label-text">体験コースを選んでください</span>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card" id="card-short" onclick="selectMode('short')">
+        <div class="mode-check">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="mode-type">説明会向け</div>
+        <div class="mode-name">適性チェック</div>
+        <div class="mode-desc">3つの場面シナリオでグループホームの介護と自分の傾向を知ることができます</div>
+        <div class="mode-time-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          約15〜20分
+        </div>
+      </div>
+      <div class="mode-card" id="card-full" onclick="selectMode('full')">
+        <div class="mode-check">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="mode-type">インターン向け</div>
+        <div class="mode-name">キャリアシミュレーション</div>
+        <div class="mode-desc">5つのシナリオをクリアしてキャリアアップのステージを解放しよう</div>
+        <div class="mode-time-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          約45〜60分
+        </div>
+      </div>
+    </div>
+    <button class="btn-start" id="btn-start" disabled onclick="startGame()">体験をスタートする</button>
+  </div>
+
+  <div class="company-strip">
+    <p>
+      兵庫県内18拠点で展開する地域密着型介護福祉サービス<br>
+      デイサービス・グループホーム・ショートステイ・障がい福祉サービス<br>
+      <a href="https://chiaki-hozuki.co.jp/" target="_blank">chiaki-hozuki.co.jp</a> &nbsp;|&nbsp;
+      <a href="https://www.chiaki-hozuki.jp/" target="_blank">採用情報はこちら</a>
+    </p>
+  </div>
+</div>
+
+<!-- ============================
+     SCREEN: QUIZ
+============================= -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-layout">
+
+    <div class="quiz-progress-wrap">
+      <div class="progress-steps" id="progress-steps"></div>
+      <div class="progress-count" id="progress-count">1 / 3</div>
+      <div class="score-pill" id="score-pill">0点</div>
+    </div>
+
+    <div class="scene-tag" id="scene-tag">場面</div>
+
+    <div class="q-card">
+      <div class="q-question" id="q-text"></div>
+      <div class="q-context">
+        <div class="q-context-label">場面の状況</div>
+        <div id="q-scenario"></div>
+      </div>
+    </div>
+
+    <div class="choices-wrap" id="choices-wrap"></div>
+
+    <div class="feedback-card" id="feedback-card">
+      <div class="feedback-head">
+        <div class="feedback-icon" id="feedback-icon"></div>
+        <span id="feedback-title"></span>
+      </div>
+      <div id="feedback-body"></div>
+    </div>
+
+    <div class="quiz-footer">
+      <div></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+        次の問題へ
+        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================
+     SCREEN: RESULT
+============================= -->
+<div class="screen" id="screen-result">
+  <div class="result-layout">
+
+    <div class="result-hero">
+      <div class="result-pct" id="result-pct">—</div>
+      <div class="result-score-sub" id="result-score-sub"></div>
+      <div class="result-title-text" id="result-title-text"></div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-head">あなたの介護適性プロフィール</div>
+      <div class="trait-grid" id="trait-grid"></div>
+    </div>
+
+    <div class="section-block" id="career-block" style="display:none">
+      <div class="section-head">ほおずきでのキャリアパス</div>
+      <div class="career-timeline" id="career-timeline"></div>
+    </div>
+
+    <div class="message-card">
+      <div class="message-card-head"><div class="dot"></div>ほおずきからのメッセージ</div>
+      <p id="message-text"></p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-restart" onclick="restart()">もう一度体験する</button>
+      <a class="btn-recruit" href="https://www.chiaki-hozuki.jp/" target="_blank">採用情報を見る →</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    scene: "朝の支度 6:30",
+    q: "起床の時間ですが、田中さん（82歳・認知症）がベッドから出ようとしません。「ここは家じゃない、帰る」と繰り返しています。あなたはどうしますか？",
+    scenario: "田中さんは昨夜から少し落ち着かない様子でした。今日の朝食はパン食の日で、厨房からいい匂いがしてきています。",
+    choices: [
+      { text: "「ここはご自宅ではありませんが、安全な場所ですよ」とやさしく事実を伝える", score: 1, trait: {共感力:0, 観察力:1, 対応力:0} },
+      { text: "「朝ごはん、一緒に作りましょうか。今日はパンの日ですよ」と別の話題に自然につなげる", score: 3, trait: {共感力:1, 観察力:1, 対応力:1} },
+      { text: "「帰りたいですよね」と気持ちをまず受け止めてから、ゆっくり朝食に誘う", score: 2, trait: {共感力:2, 観察力:0, 対応力:0} },
+      { text: "無理に起こさず、しばらく時間をおいてから声をかけ直す", score: 1, trait: {共感力:1, 観察力:1, 対応力:0} }
+    ],
+    best: 1,
+    fb_good: "感情を受け止めつつ、好きな活動（食事づくり）へ自然につなぐのはほおずきが大切にする「見守る介護」の実践です。田中さんの持てる力を引き出す声かけができています。",
+    fb_bad: "認知症の方に事実を伝えることはかえって混乱を招くことがあります。まず気持ちを受け止めてから、自然な流れへつなぐ方法を考えてみましょう。"
+  },
+  {
+    scene: "昼食準備 11:30",
+    q: "山本さん（78歳）が「今日は私が味噌汁を作る」と言っています。認知症の進行で火の管理が難しい状態ですが、山本さんはもともと料理がとても得意な方でした。",
+    scenario: "山本さんはいつも率先して食事のお手伝いをしてくださいます。「できない」と言われると落ち込む様子が見られます。",
+    choices: [
+      { text: "「危ないので今日は見ていてください」とやさしく断る", score: 0, trait: {共感力:0, 観察力:0, 対応力:0} },
+      { text: "「ありがとうございます！具材を切るところをお願いできますか」と得意な部分を任せる", score: 3, trait: {共感力:1, 観察力:1, 対応力:1} },
+      { text: "そっと隣で一緒に作りながら、火の管理だけ自分が担当する", score: 2, trait: {共感力:1, 観察力:1, 対応力:0} },
+      { text: "「今日はスタッフが担当なんですよ」と伝えて別の活動に誘う", score: 1, trait: {共感力:0, 観察力:0, 対応力:1} }
+    ],
+    best: 1,
+    fb_good: "山本さんの「したい」という意欲を活かしながら、安全に参加できる役割を見つけています。できる部分を任せることで自信と生きがいにつながる、ほおずきのケア哲学の実践です。",
+    fb_bad: "「できない」と断ることは、ご本人の意欲や自尊心を傷つけてしまいます。安全に参加できる役割を一緒に考えてみましょう。"
+  },
+  {
+    scene: "おやつタイム 15:00",
+    q: "おやつの時間に、鈴木さん（75歳）が突然「財布がない、盗られた」と周囲の入居者に向けて大声で言い始めました。他の入居者が不安そうにしています。",
+    scenario: "鈴木さんはもの忘れが進んでおり、先週も同じことがありました。財布はいつもご自身の引き出しに入っています。",
+    choices: [
+      { text: "「盗んでいません」と他の入居者の前で事実を説明して落ち着かせる", score: 0, trait: {共感力:0, 観察力:0, 対応力:0} },
+      { text: "鈴木さんをその場から穏やかに別室へ誘い、一緒に引き出しを探す", score: 3, trait: {共感力:1, 観察力:1, 対応力:1} },
+      { text: "「大丈夫ですよ」と声をかけながら、他の職員にサポートを求める", score: 2, trait: {共感力:1, 観察力:0, 対応力:1} },
+      { text: "引き出しを見せて「ここにありますよ」と鈴木さんに伝える", score: 1, trait: {共感力:0, 観察力:1, 対応力:1} }
+    ],
+    best: 1,
+    fb_good: "周囲への影響を最小化しながら、鈴木さんの気持ちに寄り添い、一緒に解決する行動が取れています。行動・心理症状を「心のメッセージ」として受け取るほおずきの姿勢が出ています。",
+    fb_bad: "周囲の前での対応は混乱を広げることがあります。まず鈴木さんの気持ちを受け止め、穏やかな場所へ移動することを考えてみましょう。"
+  },
+  {
+    scene: "入浴介助 13:30",
+    q: "佐藤さん（80歳）が「今日はお風呂に入りたくない」と強く拒否しています。前回の入浴から3日が経っています。あなたはどう対応しますか？",
+    scenario: "佐藤さんはもともとお風呂好きでしたが、最近は介助に抵抗を示すことが増えました。担当スタッフとして今日初めて接するあなたです。",
+    choices: [
+      { text: "「今日は無理に入らなくていいですよ」としてその日は見送る", score: 1, trait: {共感力:1, 観察力:0, 対応力:0} },
+      { text: "「入らないと不衛生なので」と必要性を説明して説得する", score: 0, trait: {共感力:0, 観察力:0, 対応力:0} },
+      { text: "「なんで嫌なんだろう」と理由を探りながら、好きな話題や別の活動から始める", score: 3, trait: {共感力:1, 観察力:2, 対応力:1} },
+      { text: "ベテランの職員に対応を代わってもらう", score: 2, trait: {共感力:0, 観察力:1, 対応力:2} }
+    ],
+    best: 2,
+    fb_good: "「なぜ嫌なのか」を理解しようとする姿勢が大切です。初対面の不安・体調・温度など様々な理由がある可能性を探ることで、その方に合った解決策が見えてきます。",
+    fb_bad: "拒否の理由を探らずに対応すると、根本的な解決につながりにくいです。「なぜ」を考える観察力が介護では大切な力です。"
+  },
+  {
+    scene: "夜間の見守り 22:00",
+    q: "夜間巡回中、廊下で中村さん（77歳）が一人で歩いています。「トイレに行こうとしたが場所が分からなくなった」と言っています。",
+    scenario: "中村さんは夜間に迷うことが最近増えています。今日は体調も安定しており、歩行は自立しています。",
+    choices: [
+      { text: "すぐにトイレまで手を取ってお連れする", score: 1, trait: {共感力:1, 観察力:0, 対応力:1} },
+      { text: "「一緒に行きましょう」と隣に並んで歩きながらトイレへ誘導し、普段の歩き方を観察する", score: 3, trait: {共感力:1, 観察力:2, 対応力:1} },
+      { text: "「大丈夫ですか？」と声をかけ、安全を確認してから介助する", score: 2, trait: {共感力:1, 観察力:1, 対応力:1} },
+      { text: "ナースコールの場所を伝えて、自力でトイレへ行けるか試してもらう", score: 0, trait: {共感力:0, 観察力:0, 対応力:0} }
+    ],
+    best: 1,
+    fb_good: "「隣に並んで歩く」は手を引っ張るよりも本人の自立を尊重した援助です。同時に歩行状態を観察できる、ほおずきが大切にする「見守る介護」の実践です。",
+    fb_bad: "夜間に一人で迷っている方には素早い行動も必要です。観察しながら寄り添う対応を意識しましょう。"
+  }
+];
+
+const careerStages = [
+  { title: "新入職員", years: "入職〜1年目", tasks: "基本的な身体介護・見守り・記録業務。先輩スタッフのもとで一つひとつ丁寧に覚えていきます。" },
+  { title: "一般職員", years: "2〜3年目", tasks: "利用者との信頼関係づくり・個別ケア計画への参画。自分で考えて動ける場面が増えてきます。" },
+  { title: "中堅職員 / ユニットリーダー", years: "4〜6年目", tasks: "ユニット全体のケア品質管理・後輩指導・実務者研修受講。チームを引っ張る存在に。" },
+  { title: "介護支援専門員（ケアマネ）", years: "資格取得後", tasks: "ケアプラン作成・利用者や家族との相談対応・地域連携。現場と経営の橋渡し役へ。" },
+  { title: "生活相談員", years: "実務経験を積んだ後", tasks: "入居相談・契約手続き・行政や医療機関との連絡調整・地域交流の推進。施設の顔として活躍。" },
+  { title: "主任 / フロアリーダー", years: "中堅〜管理職候補", tasks: "シフト管理・スタッフ育成・ケアの標準化・施設長補佐。マネジメントのコアを担います。" },
+  { title: "施設長", years: "管理職", tasks: "施設全体の運営・人事・予算管理・地域・行政との折衝。ほおずきのビジョンを現場で体現するリーダー。" }
+];
+
+const messages = [
+  "認知症の方の気持ちに寄り添い、その人らしい生活を支えることがグループホームの介護の核心です。ほおずきでは一人一人に合わせた介護計画と「見守る介護」を大切にしています。あなたもこの考え方を一緒に実践しませんか？",
+  "介護は知識だけでなく、観察する力・共感する力・判断する力が求められます。ほおずきには実務者研修の機会もあり、働きながら資格取得を目指せる環境が整っています。",
+  "グループホームの介護は単なるお世話ではなく「共に生活をつくる」仕事です。掃除・料理・散歩……日常のすべてがケアにつながります。ほおずきで一緒に、笑顔あふれるホームを作りましょう。"
+];
+
+let mode = null;
+let currentQ = 0;
+let score = 0;
+let traits = { 共感力: 0, 観察力: 0, 対応力: 0 };
+let answered = false;
+let totalQ = 3;
+
+function selectMode(m) {
+  mode = m;
+  ['short','full'].forEach(id => document.getElementById('card-'+id).classList.remove('selected'));
+  document.getElementById('card-'+m).classList.add('selected');
+  document.getElementById('btn-start').disabled = false;
+  totalQ = m === 'short' ? 3 : 5;
+}
+
+function startGame() {
+  currentQ = 0; score = 0; answered = false;
+  traits = { 共感力: 0, 観察力: 0, 対応力: 0 };
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const steps = document.getElementById('progress-steps');
+  steps.innerHTML = '';
+  for (let i = 0; i < totalQ; i++) {
+    const d = document.createElement('div');
+    d.className = 'prog-dot' + (i < currentQ ? ' done' : i === currentQ ? ' active' : '');
+    steps.appendChild(d);
+  }
+  document.getElementById('progress-count').textContent = (currentQ+1) + ' / ' + totalQ;
+  document.getElementById('score-pill').textContent = score + '点';
+  document.getElementById('scene-tag').textContent = q.scene;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-scenario').textContent = q.scenario;
+
+  const wrap = document.getElementById('choices-wrap');
+  wrap.innerHTML = '';
+  const labels = ['A','B','C','D'];
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-idx">${labels[i]}</span><span>${c.text}</span>`;
+    btn.onclick = () => answer(i);
+    wrap.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback-card');
+  fb.classList.remove('show','good','bad');
+  const btnNext = document.getElementById('btn-next');
+  btnNext.classList.remove('show');
+  answered = false;
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const chosen = q.choices[idx];
+  const isGood = chosen.score >= 2;
+
+  document.querySelectorAll('.choice-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === idx) b.classList.add(isGood ? 'correct' : 'incorrect');
+    if (!isGood && i === q.best) b.classList.add('reveal-correct');
+  });
+
+  score += chosen.score;
+  Object.keys(chosen.trait).forEach(k => { traits[k] = (traits[k]||0) + chosen.trait[k]; });
+  document.getElementById('score-pill').textContent = score + '点';
+
+  const fb = document.getElementById('feedback-card');
+  fb.className = 'feedback-card show ' + (isGood ? 'good' : 'bad');
+  document.getElementById('feedback-icon').textContent = isGood ? '✓' : '!';
+  document.getElementById('feedback-title').textContent = isGood ? 'ポイントを押さえた対応です' : 'ポイントを確認しよう';
+  document.getElementById('feedback-body').textContent = isGood ? q.fb_good : q.fb_bad;
+
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= totalQ) { showResult(); return; }
+  renderQuestion();
+}
+
+function showResult() {
+  showScreen('result');
+
+  const maxScore = totalQ * 3;
+  const pct = Math.round((score / maxScore) * 100);
+  document.getElementById('result-pct').innerHTML = pct + '<span class="result-pct-unit">%</span>';
+  document.getElementById('result-score-sub').textContent = 'スコア ' + score + ' / ' + maxScore + '点';
+
+  const titles = pct >= 80 ? '素晴らしい共感力と対応力です！' : pct >= 60 ? '介護の基本をよく理解しています' : '介護職の第一歩を踏み出せています';
+  document.getElementById('result-title-text').textContent = titles;
+
+  const tg = document.getElementById('trait-grid');
+  tg.innerHTML = '';
+  const maxTrait = totalQ * 2;
+  Object.entries(traits).forEach(([k, v]) => {
+    const pv = Math.min(100, Math.round((v / maxTrait) * 100));
+    tg.innerHTML += `<div class="trait-row">
+      <span class="trait-name">${k}</span>
+      <div class="trait-bar-bg"><div class="trait-bar-fg" data-pct="${pv}" style="width:0%"></div></div>
+      <span class="trait-pct">${pv}%</span>
+    </div>`;
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.trait-bar-fg').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 100);
+
+  if (mode === 'full') {
+    document.getElementById('career-block').style.display = 'block';
+    const unlockedStage = score >= 15 ? 6 : score >= 13 ? 5 : score >= 11 ? 4 : score >= 8 ? 3 : score >= 5 ? 2 : score >= 3 ? 1 : 0;
+    const ct = document.getElementById('career-timeline');
+    ct.innerHTML = '';
+    careerStages.forEach((s, i) => {
+      const state = i < unlockedStage ? 'done' : i === unlockedStage ? 'current' : 'locked';
+      ct.innerHTML += `<div class="career-item ${state}">
+        <div class="career-line-wrap">
+          <div class="career-node ${state}">${i+1}</div>
+          <div class="career-vline"></div>
+        </div>
+        <div class="career-content">
+          <div class="career-content-inner">
+            <div class="career-item-top">
+              <span class="career-item-name">${s.title}</span>
+              ${state === 'current' ? '<span class="career-current-badge">現在地</span>' : ''}
+            </div>
+            <div class="career-years">${s.years}</div>
+            <div class="career-tasks">${s.tasks}</div>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+
+  document.getElementById('message-text').textContent = messages[Math.floor(Math.random() * messages.length)];
+}
+
+function restart() {
+  mode = null;
+  ['short','full'].forEach(id => document.getElementById('card-'+id).classList.remove('selected'));
+  document.getElementById('btn-start').disabled = true;
+  showScreen('top');
+}
+</script>
+</body>
+</html>
